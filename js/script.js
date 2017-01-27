@@ -50,6 +50,7 @@ function loadData() {
             for (var i = 0; i < 10; i++) {
                 $wikiElem.append("<li><a href='"+response[3][i]+"'>"+response[1][i]+"</a></li>");
             }
+            clearTimeout(wikiRequestTimeout);
         }
     });
     return false;
