@@ -27,11 +27,26 @@ function loadData() {
                 });
     
     $.getJSON(q, function(json) {
-        var items = [];
         $.each( json.response.docs, function( i, item ) {
             $("#nytimes-articles").append("<li class='article'><a href='"+item.web_url+"'>"+item.headline.main+"</a><p>"+item.lead_paragraph+"</p></li>");
         });
 
+    })
+    .error(function() {
+        $nytHeaderElem.text('New York Times Articles Could Not Be Loaded');
+    });
+
+    $.ajax({
+        url: "https://en.wikipedia.org/w/api.php?action=opensearch&search="+city+"&prop=revisions&rvprop=content&format=json&callback=jsonP",
+        //if jsonp, add parameter callback=
+        dataType: "jsonp",
+        //jsonp: "callback",
+        success: function(response) {
+            console.log(response);
+            for (var i = 0; i < 10; i++) {
+                $wikiElem.append("<li><a href='"+response[3][i]+"'>"+response[1][i]+"</a></li>");
+            }
+        }
     });
     return false;
 };
